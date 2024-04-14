@@ -59,7 +59,7 @@ function App() {
 
         <Form.Group controlId="formBasicPrice">
             <Form.Label>Price:</Form.Label>
-            <Form.Control type="number" placeholder="Price in Euro" name="price"/>
+            <Form.Control type="number" placeholder="Price" name="price"/>
         </Form.Group>
 
         <Form.Group controlId="formBasicQty">

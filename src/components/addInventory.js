@@ -25,7 +25,7 @@ export default class AddInventory extends Component{
         });
         //console.log(products);
     }
-    
+
     // increment qty value by 1
     increQty = (e) => {
         //console.log(e.target.value)
@@ -55,7 +55,7 @@ export default class AddInventory extends Component{
 
                     <Form.Group controlId="formBasicPrice">
                         <Form.Label>Price:</Form.Label>
-                        <Form.Control type="number" placeholder="Price in Euro" name="price" />
+                        <Form.Control type="number" placeholder="Price" name="price" />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicQty">
