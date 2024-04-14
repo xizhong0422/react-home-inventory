@@ -18,25 +18,26 @@ export default class AddInventory extends Component{
             price: this.formData.current.price.value,
             qty: Number(this.formData.current.qty.value)
         }
-        // add a new product inside products array
+        // add a new product inside the products array
         this.state.products.push(newProduct);
         this.setState({
             products: this.state.products
         });
         //console.log(products);
     }
+    
     // increment qty value by 1
-    increQty = (event) => {
-        //console.log(event.target.value)
-        const indexOfArray = event.target.value;
+    increQty = (e) => {
+        //console.log(e.target.value)
+        const indexOfArray = e.target.value;
         this.state.products[indexOfArray].qty = this.state.products[indexOfArray].qty + 1;
         this.setState({
             products: this.state.products
         });
     }
     // decrement qty value by 1
-    decreQty = (event) => {
-        const indexOfArray = event.target.value;
+    decreQty = (e) => {
+        const indexOfArray = e.target.value;
         this.state.products[indexOfArray].qty = this.state.products[indexOfArray].qty - 1;
         this.setState({
             products: this.state.products
