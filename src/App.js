@@ -53,8 +53,8 @@ function App() {
 
       <Form onSubmit={addProduct} ref={formData}>
         <Form.Group controlId="formBasicProductName">
-            <Form.Label>Product Name:</Form.Label>
-            <Form.Control type="text" placeholder="Enter Product Name" name="product_name"/>
+            <Form.Label>Item Name:</Form.Label>
+            <Form.Control type="text" placeholder="Enter Item Name" name="product_name"/>
         </Form.Group>
 
         <Form.Group controlId="formBasicPrice">
@@ -75,7 +75,7 @@ function App() {
         <thead>
             <tr>
                 <th>Index</th>
-                <th>Product Name:</th>
+                <th>Item Name:</th>
                 <th>Price</th>
                 <th>Qty</th>
                 <th>Options</th>
