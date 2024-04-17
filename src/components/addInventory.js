@@ -10,8 +10,8 @@ export default class AddInventory extends Component{
         this.formData = createRef();
     }
     // addproduct handler method
-    add = (event) => {
-        event.preventDefault();
+    add = (e) => {
+        e.preventDefault();
         //console.log(formData.current)
         const newProduct = {
             product_name: this.formData.current.product_name.value,
@@ -49,8 +49,8 @@ export default class AddInventory extends Component{
             <div>
                 <Form onSubmit={this.add} ref={this.formData}>
                     <Form.Group controlId="formBasicProductName">
-                        <Form.Label>Product Name:</Form.Label>
-                        <Form.Control type="text" placeholder="Enter Product Name" name="product_name" />
+                        <Form.Label>Item Name:</Form.Label>
+                        <Form.Control type="text" placeholder="Enter Item Name" name="product_name" />
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPrice">
@@ -71,7 +71,7 @@ export default class AddInventory extends Component{
                     <thead>
                         <tr>
                             <th>Index</th>
-                            <th>Product Name:</th>
+                            <th>Item Name:</th>
                             <th>Price</th>
                             <th>Qty</th>
                             <th>Options</th>
