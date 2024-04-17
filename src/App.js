@@ -1,13 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
 import AddInventory from './components/addInventory';
-import { Form, Button, Table } from "react-bootstrap";
-import { useState, createRef, Component } from 'react';
-// import { Form, Button, Table} from "antd";
+// import { Form, Button, Table } from "react-bootstrap";
+import { useState, createRef, Component, useRef } from 'react';
+import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography } from "antd";
+// const {  Button, Form, Table, Input, Select, Space, Tooltip, Typography  } = antd;
+// const {  PlusOutlined  } = icons;
+import { PlusOutlined } from '@ant-design/icons';
+const { Option } = Select;
+
 
 function App() {
   const [products, setProduct] = useState([]);
   const formData = createRef();
+  const onFinish = (values) => {
+    console.log('Received values of form: ', values);
+  };
+  let index = 0;
 
   //add product
   const addProduct = (e)=>{
@@ -43,64 +52,218 @@ function App() {
     setProduct([...products])
   }
 
+  const [rooms, setRooms] = useState(['jack', 'lucy']); //items, setItems
+  const [roomName, setRoomName] = useState('');//name, setName
+  const inputRef = useRef(null);
+  const onNameChange = (event) => {
+    setRoomName(event.target.value);
+
+  };
+  const addRoomItem = (e) => {
+    e.preventDefault();
+    setRooms([...rooms, roomName || `New item ${index++}`]);
+    setRoomName('');
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Home Inventory 1</h1>
         <AddInventory/>
-        <h1>Home Inventory 2</h1>
       </header>
 
-      <Form onSubmit={addProduct} ref={formData}>
-        <Form.Group controlId="formBasicProductName">
-            <Form.Label>Item Name:</Form.Label>
-            <Form.Control type="text" placeholder="Enter Item Name" name="product_name"/>
-        </Form.Group>
+      <h1>Home Inventory 2</h1>
 
-        <Form.Group controlId="formBasicPrice">
-            <Form.Label>Price:</Form.Label>
-            <Form.Control type="number" placeholder="Price" name="price"/>
-        </Form.Group>
+      <Form
+        name="complex-form"
+        onFinish={onFinish}
+        layout="horizontal"
+        className="input-form"
+        labelCol={{
+          span: 8,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        style={{
+          maxWidth: 600,
+        }} >
+        <Form.Item label="Username">
+          <Space>
+            <Form.Item
+              name="username"
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: 'Username is required',
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: 160,
+                }}
+                placeholder="Please input"
+              />
+            </Form.Item>
+            <Tooltip title="Useful information">
+              <Typography.Link href="#API">Need Help?</Typography.Link>
+            </Tooltip>
+          </Space>
+        </Form.Item>
 
-        <Form.Group controlId="formBasicQty">
-            <Form.Label>Quantity:</Form.Label>
-            <Form.Control type="number" placeholder="How many: qty" name="qty"/>
-        </Form.Group>
+        <Form.Item label="Room 2">
+          <Space.Compact>
+            <Form.Item
+              name={['address', 'province']}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: 'Province is required',
+                },
+              ]}
+            >
+              <Select
+                style={{
+                  width: 300,
+                }}
+                placeholder="custom dropdown render"
+                dropdownRender={(menu) => (
+                  <>
+                    {menu}
+                    <Divider
+                      style={{
+                        margin: '8px 0',
+                      }}
+                    />
+                    <Space
+                      style={{
+                        padding: '0 8px 4px',
+                      }}
+                    >
+                      <Input
+                        placeholder="Please enter item"
+                        ref={inputRef}
+                        value={roomName}
+                        onChange={onNameChange}
+                        onKeyDown={(e) => e.stopPropagation()}
+                      />
+                      <Button type="text" icon={<PlusOutlined />} onClick={addRoomItem}>
+                        Add item
+                      </Button>
+                    </Space>
+                  </>
+                )}
+                options={rooms.map((item) => ({
+                  label: item,
+                  value: item,
+                }))}
+              />
+            </Form.Item>
 
-        <Button variant="primary" type="submit">
-            Add to Inventory
-        </Button>
+            <Form.Item
+              name={['address', 'street']}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: 'Street is required',
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: '100%',
+                }}
+                placeholder="Input street"
+              />
+            </Form.Item>
+          </Space.Compact>
+        </Form.Item>
+
+        <Form.Item label="Room">
+          <Space.Compact>
+            <Form.Item
+              name={['address', 'province']}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: 'Province is required',
+                },
+              ]}
+            >
+              <Select placeholder="Select province">
+                <Option value="Zhejiang">Zhejiang</Option>
+                <Option value="Jiangsu">Jiangsu</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item
+              name={['address', 'street']}
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: 'Street is required',
+                },
+              ]}
+            >
+              <Input
+                style={{
+                  width: '100%',
+                }}
+                placeholder="Input street"
+              />
+            </Form.Item>
+          </Space.Compact>
+        </Form.Item>
+
+        <Form.Item label="BirthDate"
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item name="year"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+            style={{
+              display: 'inline-block',
+              width: 'calc(50% - 8px)',
+            }}
+          >
+            <Input placeholder="Input birth year" />
+          </Form.Item>
+          <Form.Item name="month"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+            style={{
+              display: 'inline-block',
+              width: 'calc(50% - 8px)',
+              margin: '0 8px',
+            }}
+          >
+            <Input placeholder="Input birth month" />
+          </Form.Item>
+        </Form.Item>
+
+        <Form.Item label=" " colon={false}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
       </Form>
-      <Table striped bordered hover variant="dark">
-        <thead>
-            <tr>
-                <th>Index</th>
-                <th>Item Name:</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                products.map((item, index)=>{
-                    return(
-                        <tr key={index}>
-                            <td>{index}</td>
-                            <td>{item.product_name}</td>
-                            <td>{item.price}</td>
-                            <td>{item.qty}</td>
-                            <td>
-                                <Button variant="success" onClick={event=>increaseQty(event)} value={index}>+</Button>
-                                <Button variant="danger" onClick={event => decreaseQty(event)} value={index}>-</Button>
-                            </td>
-                        </tr>
-                    )
-                })
-            }
-        </tbody>
-      </Table>
-      
 
     </div>
   );
