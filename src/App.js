@@ -70,7 +70,7 @@ function App() {
     setProduct([...products])
   }
 
-  const [rooms, setRooms] = useState(['jack', 'lucy']); //items, setItems
+  const [rooms, setRooms] = useState(['Living room', 'Kitchen']); //items, setItems
   const [roomName, setRoomName] = useState('');//name, setName
   const inputRef = useRef(null);
   const onNameChange = (event) => {
@@ -93,7 +93,7 @@ function App() {
         <AddInventory/>
       </header>
 
-      <h1>Home Inventory 2</h1>
+      <h1>Home Inventory</h1>
 
       <Form
         name="add-item-form"
@@ -133,7 +133,7 @@ function App() {
         <Form.Item label="Item Location">
           <Space.Compact>
             <Form.Item
-              name={['specificLocation', 'room']}
+              name="room"
               noStyle
               rules={[
                 {
@@ -146,7 +146,7 @@ function App() {
                 style={{
                   width: 300,
                 }}
-                placeholder="Select or enter a room"
+                placeholder="Select or enter a location"
                 dropdownRender={(menu) => (
                   <>
                     {menu}
@@ -161,14 +161,14 @@ function App() {
                       }}
                     >
                       <Input
-                        placeholder="Please enter item"
+                        placeholder="Please enter room"
                         ref={inputRef}
                         value={roomName}
                         onChange={onNameChange}
                         onKeyDown={(e) => e.stopPropagation()}
                       />
                       <Button type="text" icon={<PlusOutlined />} onClick={addRoomItem}>
-                        Add item
+                        Add a room
                       </Button>
                     </Space>
                   </>
@@ -180,33 +180,19 @@ function App() {
               />
             </Form.Item>
 
-            <Form.Item
-              name={['address', 'street']}
-              noStyle
-              rules={[
-                {
-                  required: false,
-                  // message: 'Street is required',
-                },
-              ]}
-            >
-              <Input
-                style={{
-                  width: '100%',
-                }}
-                placeholder="Input specific location"
-              />
-            </Form.Item>
+
           </Space.Compact>
         </Form.Item>
 
         <Form.Item
           label="Quantity"
-          name="InputNumber"
+          name="itemQuantity"
+          initialValue="1"
           rules={[
             {
-              required: true,
-              message: 'Please input!',
+              required: false,
+              message: 'Please input the product quantity!',
+             
             },
           ]} >
           <InputNumber
@@ -215,38 +201,11 @@ function App() {
             }} />
         </Form.Item>
 
-        <Form.Item label="BirthDate"
-          style={{
-            marginBottom: 0,
-          }}
+        <Form.Item
+          label="Warranty Until"
+          name="warrantyDate"
         >
-          <Form.Item name="year"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)',
-            }}
-          >
-            <Input placeholder="Input birth year" />
-          </Form.Item>
-          <Form.Item name="month"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-            style={{
-              display: 'inline-block',
-              width: 'calc(50% - 8px)',
-              margin: '0 8px',
-            }}
-          >
-            <Input placeholder="Input birth month" />
-          </Form.Item>
+          <DatePicker />
         </Form.Item>
 
         <Form.Item label="Item Image" name="itemImage">

@@ -1,11 +1,10 @@
 //Inventory Item in the List
 import { Form, Button, Table } from "react-bootstrap";
 import { useState, createRef } from 'react';
+import styles from "./index.module.css";
+
 
 const InventoryItem = ({ title, content, userId, type, imgSrc, postId }) => {
-
-
-
     return (
         <div className="inventory-item">
             <div className="inventory-item__img">

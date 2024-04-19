@@ -1,3 +1,7 @@
+
+@import url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap);
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 .App {
   text-align: center;
 }
@@ -5,6 +9,11 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+:root {
+  --font-family-heading: "Roboto", sans-serif;
+  --font-family-body: "Roboto", sans-serif;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -32,10 +41,15 @@
   flex-direction: column;
   align-items: start;
   justify-content: start;
+  padding-left: 20%;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.ant-form-item .ant-form-item-label >label {
+  font-family: 'IBM Plex Sans', sans-serif;
 }
 
 /* @keyframes App-logo-spin {
