@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import AddInventory from './components/addInventory';
 // import { Form, Button, Table } from "react-bootstrap";
-import { useState, createRef, Component, useRef } from 'react';
-import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography } from "antd";
+import { useState, createRef, Component, useRef, useEffect } from 'react';
+import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography, Upload, InputNumber, DatePicker, message } from "antd";
 // const {  Button, Form, Table, Input, Select, Space, Tooltip, Typography  } = antd;
 // const {  PlusOutlined  } = icons;
 import { PlusOutlined } from '@ant-design/icons';
@@ -17,6 +17,24 @@ function App() {
     console.log('Received values of form: ', values);
   };
   let index = 0;
+  useEffect(() => {
+    // Retrieve products from local storage when the component mounts
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      setProduct(JSON.parse(storedProducts));
+    }
+  }, []); 
+
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
+
+  const [fileList, setFileList] = useState([]);
+
+  const fileUploadProps = {
+    onChange: (info) => {
+      setFileList(info.fileList); }}
+
 
   //add product
   const addProduct = (e)=>{
@@ -78,28 +96,24 @@ function App() {
       <h1>Home Inventory 2</h1>
 
       <Form
-        name="complex-form"
+        name="add-item-form"
         onFinish={onFinish}
         layout="horizontal"
-        className="input-form"
+        className="add-item-form"
         labelCol={{
-          span: 8,
+          
         }}
-        wrapperCol={{
-          span: 16,
-        }}
-        style={{
-          maxWidth: 600,
-        }} >
-        <Form.Item label="Username">
+        wrapperCol={{ span: 26, }}
+        style={{ maxWidth: "100%", }} >
+        <Form.Item label="Item Name">
           <Space>
             <Form.Item
-              name="username"
+              name="itemname"
               noStyle
               rules={[
                 {
                   required: true,
-                  message: 'Username is required',
+                  message: 'Item name is required',
                 },
               ]}
             >
@@ -107,24 +121,24 @@ function App() {
                 style={{
                   width: 160,
                 }}
-                placeholder="Please input"
+                placeholder="Input item name"
               />
             </Form.Item>
-            <Tooltip title="Useful information">
-              <Typography.Link href="#API">Need Help?</Typography.Link>
+            <Tooltip title="Input the item name">
+              <Typography.Link href="#help">Need Help?</Typography.Link>
             </Tooltip>
           </Space>
         </Form.Item>
 
-        <Form.Item label="Room 2">
+        <Form.Item label="Item Location">
           <Space.Compact>
             <Form.Item
-              name={['address', 'province']}
+              name={['specificLocation', 'room']}
               noStyle
               rules={[
                 {
                   required: true,
-                  message: 'Province is required',
+                  message: 'Room Location is required',
                 },
               ]}
             >
@@ -132,7 +146,7 @@ function App() {
                 style={{
                   width: 300,
                 }}
-                placeholder="custom dropdown render"
+                placeholder="Select or enter a room"
                 dropdownRender={(menu) => (
                   <>
                     {menu}
@@ -171,8 +185,8 @@ function App() {
               noStyle
               rules={[
                 {
-                  required: true,
-                  message: 'Street is required',
+                  required: false,
+                  // message: 'Street is required',
                 },
               ]}
             >
@@ -180,48 +194,25 @@ function App() {
                 style={{
                   width: '100%',
                 }}
-                placeholder="Input street"
+                placeholder="Input specific location"
               />
             </Form.Item>
           </Space.Compact>
         </Form.Item>
 
-        <Form.Item label="Room">
-          <Space.Compact>
-            <Form.Item
-              name={['address', 'province']}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: 'Province is required',
-                },
-              ]}
-            >
-              <Select placeholder="Select province">
-                <Option value="Zhejiang">Zhejiang</Option>
-                <Option value="Jiangsu">Jiangsu</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              name={['address', 'street']}
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: 'Street is required',
-                },
-              ]}
-            >
-              <Input
-                style={{
-                  width: '100%',
-                }}
-                placeholder="Input street"
-              />
-            </Form.Item>
-          </Space.Compact>
+        <Form.Item
+          label="Quantity"
+          name="InputNumber"
+          rules={[
+            {
+              required: true,
+              message: 'Please input!',
+            },
+          ]} >
+          <InputNumber
+            style={{
+              width: '100%',
+            }} />
         </Form.Item>
 
         <Form.Item label="BirthDate"
@@ -256,6 +247,18 @@ function App() {
           >
             <Input placeholder="Input birth month" />
           </Form.Item>
+        </Form.Item>
+
+        <Form.Item label="Item Image" name="itemImage">
+          <Upload 
+            {...fileUploadProps}
+            maxCount={2}
+            beforeUpload={() => false}
+            listType="picture-card"
+            accept="image/*">
+            <PlusOutlined />
+            <div style={{ marginLeft: 4 }}>Upload</div>
+          </Upload>
         </Form.Item>
 
         <Form.Item label=" " colon={false}>

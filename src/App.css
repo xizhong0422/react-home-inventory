@@ -15,7 +15,6 @@
 
 .App-header {
   background-color: #a0a87a;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,14 +23,15 @@
   color: white;
 }
 
-.input-form{
+.add-item-form{
   width: 100%;
-  background-color: #a0a87a;
+  background-color: #d9eaff;
   min-height: 100vh;
+  padding-top: 4vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: start;
 }
 
 .App-link {
