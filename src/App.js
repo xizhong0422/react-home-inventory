@@ -23,7 +23,7 @@ function App() {
       productQuantity: Number(formValue.itemQuantity),
       productPrice: Number(formValue.itemPrice),
       productMaintenanceDate: formValue.maintenanceDate ? formValue.maintenanceDate.format('YYYY-MM-DD') : null,
-      productImage: formValue.itemImage ? formValue.itemImage : null,
+      productImage: formValue.itemImage ? formValue.itemImage.fileList[0] : null,
     }
     console.log("new product entered is: ", newProduct);
     setProduct([...products, newProduct]);
@@ -214,7 +214,7 @@ function App() {
       quantity: product.productQuantity,
       price: product.productPrice ? product.productPrice : null,
       maintenanceDate: product.productMaintenanceDate ? product.productMaintenanceDate : null,
-      image: product.productImage ? product.productImage.fileList[0].theImageURL : null,
+      image: product.productImage ? product.productImage : null,
     }});
   
   const onChange = (pagination, filters, sorter, extra) => {
