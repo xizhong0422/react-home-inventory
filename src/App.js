@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import AddInventory from './components/addInventory';
 import { useState, createRef, useRef, useEffect, useContext } from 'react';
-import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography, Upload, InputNumber, DatePicker, message } from "antd";
+import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography, Upload, InputNumber, DatePicker, message, Popconfirm } from "antd";
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 
@@ -89,9 +89,11 @@ function App() {
     setSearchText('');
   };
 
-  handleDelete = key => {
-    const data = [...products];
-    setProduct(data.filter(item => item.key !== key));
+  const handleDelete = (key) => {
+    // console.log("key is: ", key);
+    const data = products.filter((item, index) => index !== key);
+    // console.log("removed list is: ", data);
+    setProduct(data);
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -208,7 +210,12 @@ function App() {
       title: 'Action',
       dataIndex: '',
       key: 'x',
-      render: () => <a>Delete</a>,
+      render: (text, record) =>
+          products.length >= 1 ? (
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+              <a>Delete</a>
+            </Popconfirm>
+          ): null,
     },
   ];
 
