@@ -356,7 +356,7 @@ function App() {
         <Form.Item label="Item Image" name="itemImage">
           <Upload 
             {...fileUploadProps}
-            maxCount={2}
+            maxCount={1}
             beforeUpload={() => false}
             listType="picture-card"
             accept="image/*">
