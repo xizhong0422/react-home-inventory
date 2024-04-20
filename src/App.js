@@ -8,7 +8,9 @@ import Highlighter from 'react-highlight-words';
 
 
 function App() {
-  const [products, setProduct] = useState([]);
+  const initialProducts = JSON.parse(localStorage.getItem('products')) || [];
+  const [products, setProduct] = useState(initialProducts);
+  
   const formData = createRef();
   const [form] = Form.useForm();
 
@@ -40,6 +42,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('products', JSON.stringify(products));
   }, [products]); //runs whenever products change
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem('products');
+    setProduct([]);
+  };
 
   const [fileList, setFileList] = useState([]);
 
@@ -176,16 +183,9 @@ function App() {
     },
     { title: 'Item Location',
       dataIndex: 'location',
-      filters: [
-        {
-          text: 'Living Room',
-          value: 'Living room',
-        },
-        {
-          text: 'Kitchen',
-          value: 'Kitchen',
-        },
-      ],
+      filters: rooms.map (room => ({
+        text: room,
+        value: room,})),
       onFilter: (value, record) => record.address.startsWith(value),
       filterSearch: true,
       width: '40%',
@@ -197,7 +197,13 @@ function App() {
     { title: "Image",
       dataIndex: "image",
       render: theImageURL => <img alt={theImageURL} src={theImageURL} /> 
-    }
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: () => <a>Delete</a>,
+    },
   ];
 
   const tableData = products.map((product, index) => {
@@ -208,35 +214,8 @@ function App() {
       quantity: product.productQuantity,
       price: product.productPrice ? product.productPrice : null,
       maintenanceDate: product.productMaintenanceDate ? product.productMaintenanceDate : null,
-      image: product.productImage ? product.productImage.fileList[0] : null,
+      image: product.productImage ? product.productImage.fileList[0].theImageURL : null,
     }});
-
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Jim Red',
-      age: 32,
-      address: 'London No. 2 Lake Park',
-    },
-  ];
   
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
@@ -376,7 +355,7 @@ function App() {
         <Form.Item label=" " colon={false}>
           <Button type="primary" htmlType="submit" 
           style={{
-            backgroundColor: "#1890ff",
+            backgroundColor: "#134074",
             borderColor: "#FFFFFF",
             borderRadius: "5px",
             borderWidth: "2px",
@@ -386,8 +365,18 @@ function App() {
         </Form.Item>
       </Form>
 
-      <Table columns={columns} dataSource={tableData} onChange={onChange} />
-
+      <Table columns={columns} dataSource={tableData} onChange={onChange} 
+        
+      />
+      
+      <Button type="primary" onClick={clearLocalStorage}
+          style={{
+            backgroundColor: "#134074",
+            borderColor: "#ffffff",
+            borderRadius: "5px",
+            borderWidth: "2px",
+          }}>
+            Clear Inventory</Button>
     </div>
   );
 }

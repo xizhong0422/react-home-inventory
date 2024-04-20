@@ -33,7 +33,7 @@
 
 .add-item-form{
   width: 100%;
-  background-color: #d9eaff;
+  background-color: #CDF7F6;
   min-height: 50vh;
   padding-top: 4vh;
   display: flex;
@@ -58,23 +58,35 @@
 
 ant-picker-outlined:focus, .ant-picker-outlined:focus-within{
   border-width: 2px;
-  border-color: #1979FE;
+  border-color: #134074;
 }
 
 ant-input-number-outlined:focus, .ant-input-number-outlined:focus-within {
   border-width: 2px;
-  border-color: #1979FE;
+  border-color: #134074;
 }
 
 .ant-input-outlined:focus-within{
   border-width: 2px;
-  border-color: #1979FE;
+  border-color: #134074;
 }
 
 .ant-select-selector .ant-select-selection-search-input .ant-select-open
 {
   border-width: 2px;
-  border-color: #1979FE;
+  border-color: #134074;
+}
+
+
+.ant-table-cell{
+  background-color: #CDF7F6;
+  border-color: #FFFFFF;
+  border-style: solid;
+}
+
+ant-pagination-item ant-pagination-item-1 ant-pagination-item-active{
+  border-color: #134074;
+  border-style: solid;
 }
 
 /* @keyframes App-logo-spin {
