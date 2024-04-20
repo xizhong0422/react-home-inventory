@@ -13,7 +13,8 @@ function App() {
   
   const formData = createRef();
   const [form] = Form.useForm();
-
+  const [file, setFile] = useState();
+  
   //Function for form submission
   const onFinish = (formValue) => {
     console.log('Received values of form: ', formValue);
@@ -23,7 +24,7 @@ function App() {
       productQuantity: Number(formValue.itemQuantity),
       productPrice: Number(formValue.itemPrice),
       productMaintenanceDate: formValue.maintenanceDate ? formValue.maintenanceDate.format('YYYY-MM-DD') : null,
-      productImage: formValue.itemImage ? formValue.itemImage.fileList[0] : null,
+      productImage: formValue.itemImage ? URL.createObjectURL(formValue.itemImage.file) : null,
     }
     console.log("new product entered is: ", newProduct);
     setProduct([...products, newProduct]);
@@ -86,6 +87,11 @@ function App() {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText('');
+  };
+
+  handleDelete = key => {
+    const data = [...products];
+    setProduct(data.filter(item => item.key !== key));
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -196,7 +202,7 @@ function App() {
     },
     { title: "Image",
       dataIndex: "image",
-      render: theImageURL => <img alt={theImageURL} src={theImageURL} /> 
+      render: theImageURL => <img alt={theImageURL} src={theImageURL} height={80}/> 
     },
     {
       title: 'Action',
