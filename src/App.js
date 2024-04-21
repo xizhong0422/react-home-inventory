@@ -200,7 +200,10 @@ function App() {
     },
     { title: 'Maintenance Expected Date',
     dataIndex: 'maintenanceDate',
-    sorter: (a, b) => a.maintenanceDate - b.maintenanceDate,
+    
+    sorter: 
+    (a, b) => 
+      new Date(...a.maintenanceDate.split('/').reverse()) - new Date(...b.maintenanceDate.split('/').reverse()),
     },
     { title: "Image",
       dataIndex: "image",
@@ -355,14 +358,14 @@ function App() {
 
         <Form.Item label="Item Image" name="itemImage">
           <Upload 
-            {...fileUploadProps}
-            maxCount={1}
-            beforeUpload={() => false}
-            listType="picture-card"
-            accept="image/*">
-            <PlusOutlined />
-            <div style={{ marginLeft: 4 }}>Upload</div>
-          </Upload>
+          {...fileUploadProps}
+          maxCount={1}
+          beforeUpload={() => false}
+          listType="picture-card"
+          accept="image/*"> 
+          <PlusOutlined />
+          <div style={{ marginLeft: 4 }}>Upload</div>
+          </Upload>  
         </Form.Item>
 
         <Form.Item label=" " colon={false}>
