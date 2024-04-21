@@ -200,10 +200,14 @@ function App() {
     },
     { title: 'Maintenance Expected Date',
     dataIndex: 'maintenanceDate',
-    
-    sorter: 
-    (a, b) => 
-      new Date(...a.maintenanceDate.split('/').reverse()) - new Date(...b.maintenanceDate.split('/').reverse()),
+    sorter: (a, b) => (
+      (a.maintenanceDate && b.maintenanceDate) // Check if both a and b have maintenanceDate field
+        ? (
+          new Date(...a.maintenanceDate.split('/').reverse()) - 
+          new Date(...b.maintenanceDate.split('/').reverse())
+        )  // Perform sorting based on maintenanceDate if available
+        : 0  // Return 0 if maintenanceDate field is missing or null
+    ) 
     },
     { title: "Image",
       dataIndex: "image",
