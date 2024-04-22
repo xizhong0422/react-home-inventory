@@ -58,7 +58,7 @@ function App() {
     } 
     console.log("new product entered is: ", newProduct);
     setProduct([...products, newProduct]); 
-    message.success('Product added successfully');
+    message.success('Item added successfully');
     form.resetFields();
   }; 
 
