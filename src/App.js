@@ -292,9 +292,9 @@ function App() {
       quantity: product.productQuantity,
       price: product.productPrice ? product.productPrice : null,
       maintenanceDate: product.productMaintenanceDate ? product.productMaintenanceDate : null,
-      image: product.productImage ? product.productImage : null,
+      // image: product.productImage ? product.productImage : null,
       entry: entryForSearch,
-      // image: storedImageData ? imgsrc : null,
+      image: storedImageData ? storedImageData : null,
       //localStorage.getItem('products')
     }});
   
