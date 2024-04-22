@@ -279,11 +279,11 @@ function App() {
 
   const tableData = products.map((product, index) => {
     const storedImageData = localStorage.getItem(product.productName);
-    let imgsrc;
-    if (storedImageData) {
-      imgsrc = "data:image/png;base64," + storedImageData;
-      // console.log("storedImageData is: ", storedImageData);
-    }
+    // let imgsrc;
+    // if (storedImageData) {
+    //   imgsrc = "data:image/png;base64," + storedImageData;
+    //   // console.log("storedImageData is: ", storedImageData);
+    // }
     const entryForSearch = `https://www.google.com/search?q=${product.productName}`;
     return {
       key: index,
