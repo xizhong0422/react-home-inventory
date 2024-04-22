@@ -53,6 +53,7 @@ function App() {
       productPrice: Number(formValue.itemPrice),
       productMaintenanceDate: formValue.maintenanceDate ? formValue.maintenanceDate.format('YYYY-MM-DD') : null,
       productImage: formValue.itemImage ? URL.createObjectURL(formValue.itemImage.file) : null,
+      
       // productImage: formValue.itemImage.file ? img64 : null,
     } 
     console.log("new product entered is: ", newProduct);
@@ -81,11 +82,25 @@ function App() {
   };
 
   const [fileList, setFileList] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const fileUploadProps = {
     onChange: (info) => {
-      setFileList(info.fileList); 
-  }}
+      // If there's already an upload process going on, don't do anything
+      if (!uploading) {
+        setUploading(true); // Begin the upload process
+  
+        // Set a timeout to simulate a delay
+        setTimeout(() => {
+          // Perform your logic like updating fileList only after some time has passed
+          setFileList(info.fileList);
+  
+          // Once the state is updated, reset the uploading status
+          setUploading(false);
+        }, 1000); // Delay in ms, here it's set to 1000ms or 1 second
+      }
+    }
+  }
 
   //funtion for rooms
   let index = 0;
@@ -242,14 +257,12 @@ function App() {
     },
     { title: "Image",
       dataIndex: "image",
-      render: theImageURL => <img alt={"product image"} src={theImageURL} height={80}/> 
+      render: theImageURL => <img alt={""} src={theImageURL} height={80}/> 
     },
     {
       title: 'Relevant Links',
-      dataIndex: '',
-      key: 'x',
-      render: () =>
-      <a>Delete</a>,
+      dataIndex: 'link',
+      render: (text, record) => (<a href={record.entry} target="_blank">Content relevant to {record.name}</a>),
     },
     {
       title: 'Action',
@@ -271,6 +284,7 @@ function App() {
       imgsrc = "data:image/png;base64," + storedImageData;
       // console.log("storedImageData is: ", storedImageData);
     }
+    const entryForSearch = `https://www.google.com/search?q=${product.productName}`;
     return {
       key: index,
       name: product.productName,
@@ -279,6 +293,7 @@ function App() {
       price: product.productPrice ? product.productPrice : null,
       maintenanceDate: product.productMaintenanceDate ? product.productMaintenanceDate : null,
       image: product.productImage ? product.productImage : null,
+      entry: entryForSearch,
       // image: storedImageData ? imgsrc : null,
       //localStorage.getItem('products')
     }});
