@@ -14,10 +14,38 @@ function App() {
   const formData = createRef();
   const [form] = Form.useForm();
   const [file, setFile] = useState();
+  let imageElement;
+
+  const createImageElement = (imageUrl) => {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    return img;
+  };
+
+  const getPhoto = (base64) => {
+    var base64Parts = base64.split(",");
+    var fileFormat = base64Parts[0].split(";")[1];
+    var fileContent = base64Parts[1];
+    var file = new File([fileContent], "product image", {type: fileFormat});
+    console.log("file is: ", file);
+    return file;
+ }
   
   //Function for form submission
   const onFinish = (formValue) => {
     console.log('Received values of form: ', formValue);
+    imageElement = formValue.itemImage ? createImageElement(URL.createObjectURL(formValue.itemImage.file)) : null;
+    console.log("image element is: ", imageElement);//对的
+    const reader = new FileReader();
+    let img64; 
+    if (formValue.itemImage) { 
+        reader.onload = function(e) {
+            img64 = e.target.result; //correct
+            // console.log("img64 is: ", img64);
+            localStorage.setItem(formValue.itemName, img64);
+        }
+        reader.readAsDataURL(formValue.itemImage.file);
+    }    
     const newProduct = {
       productName: formValue.itemName,
       productLocation: formValue.room,
@@ -25,9 +53,10 @@ function App() {
       productPrice: Number(formValue.itemPrice),
       productMaintenanceDate: formValue.maintenanceDate ? formValue.maintenanceDate.format('YYYY-MM-DD') : null,
       productImage: formValue.itemImage ? URL.createObjectURL(formValue.itemImage.file) : null,
-    }
+      // productImage: formValue.itemImage.file ? img64 : null,
+    } 
     console.log("new product entered is: ", newProduct);
-    setProduct([...products, newProduct]);
+    setProduct([...products, newProduct]); 
     message.success('Product added successfully');
     form.resetFields();
   }; 
@@ -35,6 +64,7 @@ function App() {
   useEffect(() => {
     // Retrieve products from local storage when the component mounts
     const storedProducts = localStorage.getItem('products');
+
     if (storedProducts) {
       setProduct(JSON.parse(storedProducts));
     }
@@ -47,6 +77,7 @@ function App() {
   const clearLocalStorage = () => {
     localStorage.removeItem('products');
     setProduct([]);
+    localStorage.clear();
   };
 
   const [fileList, setFileList] = useState([]);
@@ -211,7 +242,14 @@ function App() {
     },
     { title: "Image",
       dataIndex: "image",
-      render: theImageURL => <img alt={theImageURL} src={theImageURL} height={80}/> 
+      render: theImageURL => <img alt={"product image"} src={theImageURL} height={80}/> 
+    },
+    {
+      title: 'Relevant Links',
+      dataIndex: '',
+      key: 'x',
+      render: () =>
+      <a>Delete</a>,
     },
     {
       title: 'Action',
@@ -223,10 +261,16 @@ function App() {
               <a>Delete</a>
             </Popconfirm>
           ): null,
-    },
+    }, 
   ];
 
   const tableData = products.map((product, index) => {
+    const storedImageData = localStorage.getItem(product.productName);
+    let imgsrc;
+    if (storedImageData) {
+      imgsrc = "data:image/png;base64," + storedImageData;
+      // console.log("storedImageData is: ", storedImageData);
+    }
     return {
       key: index,
       name: product.productName,
@@ -235,6 +279,8 @@ function App() {
       price: product.productPrice ? product.productPrice : null,
       maintenanceDate: product.productMaintenanceDate ? product.productMaintenanceDate : null,
       image: product.productImage ? product.productImage : null,
+      // image: storedImageData ? imgsrc : null,
+      //localStorage.getItem('products')
     }});
   
   const onChange = (pagination, filters, sorter, extra) => {
@@ -244,7 +290,8 @@ function App() {
     <div className="App">
 
       <h1>Home Inventory</h1>
-
+      {imageElement}
+      
       <Form 
         form={form}
         name="add-item-form"
