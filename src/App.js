@@ -10,6 +10,12 @@ import Highlighter from 'react-highlight-words';
 function App() {
   const initialProducts = JSON.parse(localStorage.getItem('products')) || [];
   const [products, setProduct] = useState(initialProducts);
+
+  const clearLocalStorage = () => {
+    localStorage.removeItem('products');
+    setProduct([]);
+    localStorage.clear();
+  };
   
   const formData = createRef();
   const [form] = Form.useForm();
@@ -57,29 +63,27 @@ function App() {
       // productImage: formValue.itemImage.file ? img64 : null,
     } 
     console.log("new product entered is: ", newProduct);
-    setProduct([...products, newProduct]); 
+
+    setProduct(prevProducts => {
+      const updatedProducts = [...prevProducts, newProduct];
+      // Store the updated products in local storage
+      localStorage.setItem('products', JSON.stringify(updatedProducts));
+      // Log the updated products to the console
+      console.log("Updated Products:", updatedProducts);
+      return updatedProducts;
+    });
+
+    // setProduct([...products, newProduct]),() => {
+    //   localStorage.setItem('products', JSON.stringify(products));
+    //   console.log("products are: ", products);
+    // };
+
+
+    // setProduct([...products, newProduct]); 
+    
     message.success('Item added successfully');
     form.resetFields();
   }; 
-
-  useEffect(() => {
-    // Retrieve products from local storage when the component mounts
-    const storedProducts = localStorage.getItem('products');
-
-    if (storedProducts) {
-      setProduct(JSON.parse(storedProducts));
-    }
-  }, []); //only run once
-
-  useEffect(() => {
-    localStorage.setItem('products', JSON.stringify(products));
-  }, [products]); //runs whenever products change
-
-  const clearLocalStorage = () => {
-    localStorage.removeItem('products');
-    setProduct([]);
-    localStorage.clear();
-  };
 
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -119,7 +123,6 @@ function App() {
     }, 0);
   };
 
-  //form
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
@@ -136,10 +139,16 @@ function App() {
   };
 
   const handleDelete = (key) => {
-    // console.log("key is: ", key);
-    const data = products.filter((item, index) => index !== key);
-    // console.log("removed list is: ", data);
-    setProduct(data);
+    console.log("key is: ", key);
+    console.log("removed item name is: ", products[key].productName);
+    if (products[key].productImage){
+      localStorage.removeItem(products[key].productName);
+    }
+    setProduct(prevProducts => {
+      const data = prevProducts.filter((item, index) => index !== key);
+      localStorage.setItem('products', JSON.stringify(data));
+      return data;
+    });
   };
 
   const getColumnSearchProps = (dataIndex) => ({
