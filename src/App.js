@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import AddInventory from './components/addInventory';
-import { useState, createRef, useRef, useEffect, useContext } from 'react';
+import { useState, useRef, } from 'react';
 import { Form, Button, Divider, Table, Input, Select, Space, Tooltip, Typography, Upload, InputNumber, DatePicker, message, Popconfirm } from "antd";
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -17,9 +17,7 @@ function App() {
     localStorage.clear();
   };
   
-  const formData = createRef();
   const [form] = Form.useForm();
-  const [file, setFile] = useState();
   let imageElement;
 
   const createImageElement = (imageUrl) => {
@@ -27,17 +25,7 @@ function App() {
     img.src = imageUrl;
     return img;
   };
-
-  const getPhoto = (base64) => {
-    var base64Parts = base64.split(",");
-    var fileFormat = base64Parts[0].split(";")[1];
-    var fileContent = base64Parts[1];
-    var file = new File([fileContent], "product image", {type: fileFormat});
-    console.log("file is: ", file);
-    return file;
- }
   
-  //Function for form submission
   const onFinish = (formValue) => {
     console.log('Received values of form: ', formValue);
     imageElement = formValue.itemImage ? createImageElement(URL.createObjectURL(formValue.itemImage.file)) : null;
@@ -59,7 +47,6 @@ function App() {
       productPrice: Number(formValue.itemPrice),
       productMaintenanceDate: formValue.maintenanceDate ? formValue.maintenanceDate.format('YYYY-MM-DD') : null,
       productImage: formValue.itemImage ? URL.createObjectURL(formValue.itemImage.file) : null,
-      
       // productImage: formValue.itemImage.file ? img64 : null,
     } 
     console.log("new product entered is: ", newProduct);
@@ -72,41 +59,24 @@ function App() {
       console.log("Updated Products:", updatedProducts);
       return updatedProducts;
     });
-
-    // setProduct([...products, newProduct]),() => {
-    //   localStorage.setItem('products', JSON.stringify(products));
-    //   console.log("products are: ", products);
-    // };
-
-
-    // setProduct([...products, newProduct]); 
-    
     message.success('Item added successfully');
     form.resetFields();
   }; 
 
-  const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
 
   const fileUploadProps = {
     onChange: (info) => {
       // If there's already an upload process going on, don't do anything
       if (!uploading) {
-        setUploading(true); // Begin the upload process
-  
-        // Set a timeout to simulate a delay
+        setUploading(true); 
         setTimeout(() => {
-          // Perform your logic like updating fileList only after some time has passed
-          setFileList(info.fileList);
-  
-          // Once the state is updated, reset the uploading status
           setUploading(false);
         }, 1000); // Delay in ms, here it's set to 1000ms or 1 second
       }
     }
   }
 
-  //funtion for rooms
   let index = 0;
   const [rooms, setRooms] = useState(['Living room', 'Kitchen', 'Bedroom 1', 'Bedroom 2', 'Basement', 'Garage', 'Garden']); 
   const [roomName, setRoomName] = useState('');//name, setName
@@ -456,9 +426,7 @@ function App() {
         </Form.Item>
       </Form>
 
-      <Table columns={columns} dataSource={tableData} onChange={onChange} 
-        
-      />
+      <Table columns={columns} dataSource={tableData} onChange={onChange} />
       
       <Button type="primary" onClick={clearLocalStorage}
           style={{
