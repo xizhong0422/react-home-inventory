@@ -29,7 +29,7 @@ function App() {
   const onFinish = (formValue) => {
     console.log('Received values of form: ', formValue);
     imageElement = formValue.itemImage ? createImageElement(URL.createObjectURL(formValue.itemImage.file)) : null;
-    console.log("image element is: ", imageElement);//对的
+    // console.log("image element is: ", imageElement);//对的
     const reader = new FileReader();
     let img64; 
     if (formValue.itemImage) { 
@@ -49,13 +49,11 @@ function App() {
       productImage: formValue.itemImage ? URL.createObjectURL(formValue.itemImage.file) : null,
       // productImage: formValue.itemImage.file ? img64 : null,
     } 
-    console.log("new product entered is: ", newProduct);
+    // console.log("new product entered is: ", newProduct);
 
     setProduct(prevProducts => {
       const updatedProducts = [...prevProducts, newProduct];
-      // Store the updated products in local storage
       localStorage.setItem('products', JSON.stringify(updatedProducts));
-      // Log the updated products to the console
       console.log("Updated Products:", updatedProducts);
       return updatedProducts;
     });
@@ -67,12 +65,11 @@ function App() {
 
   const fileUploadProps = {
     onChange: (info) => {
-      // If there's already an upload process going on, don't do anything
       if (!uploading) {
         setUploading(true); 
         setTimeout(() => {
           setUploading(false);
-        }, 1000); // Delay in ms, here it's set to 1000ms or 1 second
+        }, 1000); 
       }
     }
   }
@@ -226,12 +223,12 @@ function App() {
     { title: 'Maintenance Expected Date',
     dataIndex: 'maintenanceDate',
     sorter: (a, b) => (
-      (a.maintenanceDate && b.maintenanceDate) // Check if both a and b have maintenanceDate field
+      (a.maintenanceDate && b.maintenanceDate)  
         ? (
           new Date(...a.maintenanceDate.split('/').reverse()) - 
           new Date(...b.maintenanceDate.split('/').reverse())
-        )  // Perform sorting based on maintenanceDate if available
-        : 0  // Return 0 if maintenanceDate field is missing or null
+        )   
+        : 0   
     ) 
     },
     { title: "Image",
@@ -258,11 +255,6 @@ function App() {
 
   const tableData = products.map((product, index) => {
     const storedImageData = localStorage.getItem(product.productName);
-    // let imgsrc;
-    // if (storedImageData) {
-    //   imgsrc = "data:image/png;base64," + storedImageData;
-    //   // console.log("storedImageData is: ", storedImageData);
-    // }
     const entryForSearch = `https://www.google.com/search?q=${product.productName}`;
     return {
       key: index,
